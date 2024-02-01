@@ -7,9 +7,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFrameworkCore.Domain"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFrameworkCore.Data", "EntityFrameworkCore.Data\EntityFrameworkCore.Data.csproj", "{F883BA60-506D-4352-9960-BB2BE6AD442F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityFrameworkCore.Console", "EntityFrameworkCore.Console\EntityFrameworkCore.Console.csproj", "{F1760FDE-C7CF-452D-A81B-DB30133E053F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFrameworkCore.Console", "EntityFrameworkCore.Console\EntityFrameworkCore.Console.csproj", "{F1760FDE-C7CF-452D-A81B-DB30133E053F}"
 	ProjectSection(ProjectDependencies) = postProject
 		{F883BA60-506D-4352-9960-BB2BE6AD442F} = {F883BA60-506D-4352-9960-BB2BE6AD442F}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementi di soluzione", "Elementi di soluzione", "{C76C573F-D268-43E4-B6A5-010D1F53059F}"
+	ProjectSection(SolutionItems) = preProject
+		Commands.txt = Commands.txt
 	EndProjectSection
 EndProject
 Global

@@ -1,0 +1,15 @@
+Package Manager Console - Visual Studio 2022
+
+-- Add new migration, with name InitialMigration
+PM> Add-Migration InitialMigration
+Build started...
+Build succeeded.
+To undo this action, use Remove-Migration.
+
+-- Update database or create database if not exist
+PM> Update-Database
+Build started...
+Build succeeded.
+Applying migration '20240201014343_InitialMigration'.
+Done.
+PM> 
