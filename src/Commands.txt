@@ -1,5 +1,8 @@
 Package Manager Console - Visual Studio 2022
 
+Set .Console the default project to start.
+Set .Data the default project in the Package Manager Console.
+
 -- Add new migration, with name InitialMigration
 PM> Add-Migration InitialMigration
 Build started...
