@@ -15,4 +15,6 @@ Build started...
 Build succeeded.
 Applying migration '20240201014343_InitialMigration'.
 Done.
-PM> 
+
+-- Reverse engineer the model from an existing database
+PM> Scaffold-DbContext 'Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=FootballLeague_EFCore; Encrypt=False' Microsoft.EntityFrameworkCore.SqlServer -ContextDir ScaffoldContext -OutputDir ScaffoldModels -Force
