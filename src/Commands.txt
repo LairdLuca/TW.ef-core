@@ -18,3 +18,5 @@ Done.
 
 -- Reverse engineer the model from an existing database
 PM> Scaffold-DbContext 'Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=FootballLeague_EFCore; Encrypt=False' Microsoft.EntityFrameworkCore.SqlServer -ContextDir ScaffoldContext -OutputDir ScaffoldModels -Force
+
+if database change add -Force to the command to scaffold the model again ad override the old ones.
