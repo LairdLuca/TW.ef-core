@@ -9,6 +9,12 @@ Build started...
 Build succeeded.
 To undo this action, use Remove-Migration.
 
+--Add new migration, with name SeededTeams and see context FootballLeagueDbContext for changes
+PM> Add-Migration SeededTeams -Context FootballLeagueDbContext
+Build started...
+Build succeeded.
+To undo this action, use Remove-Migration.
+
 -- Update database or create database if not exist
 PM> Update-Database
 Build started...
