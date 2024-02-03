@@ -11,15 +11,23 @@ namespace EntityFrameworkCore.Data
 {
     public class FootballLeagueDbContext : DbContext
     {
+        public FootballLeagueDbContext()
+        {
+            var folder = Environment.SpecialFolder.LocalApplicationData;
+            var path = Environment.GetFolderPath(folder);
+            DbPath = Path.Combine(path, "FootballLeague_EFCore.db");
+        }
+
         public DbSet<Team> Teams { get; set; }
         public DbSet<Coach> Coaches { get; set; }
+        public string DbPath { get; private set; }
 
         override protected void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //Using SQL Server
             //optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=FootballLeague_EFCore; Encrypt=False");
 
-            optionsBuilder.UseSqlite("Data Source=FootballLeague_EFCore.db")
+            optionsBuilder.UseSqlite($"Data Source={DbPath}")
                 .LogTo(Console.WriteLine, LogLevel.Information)
 
                 //this two lines are used only for educational purposes, do not use in production
