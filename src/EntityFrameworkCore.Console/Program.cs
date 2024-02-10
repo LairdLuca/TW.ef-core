@@ -12,14 +12,32 @@ namespace EntityFrameworkCore.Console
         static async Task Main(string[] args)
         {
             // Select all teams
-           //await  StampAllTeams();
+            //await  StampAllTeams();
+            await StampAllTeamsQuerySyntax();
 
             //Select one team
             //await StampOneTeam();
             
             //Select all record thast meet a condition
-            await StampFilteredTeams();
+            //await StampFilteredTeams();
 
+        }
+
+        private static async Task StampAllTeamsQuerySyntax()
+        {
+            System.Console.WriteLine("Enter search term");
+            string? searchTerm = System.Console.ReadLine();
+
+            List<Team> teams = await (
+                from team in context.Teams 
+                where EF.Functions.Like(team.Name, $"%{searchTerm}%")
+                select team
+                ).ToListAsync();
+
+            foreach (var team in teams)
+            {
+                System.Console.WriteLine(team.Name);
+            }
         }
 
         private static async Task StampFilteredTeams()
