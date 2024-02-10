@@ -32,6 +32,19 @@ namespace EntityFrameworkCore.Console
             {
                 System.Console.WriteLine(team.Name);
             }
+
+            System.Console.WriteLine("Enter search term");
+            string? searchTerm = System.Console.ReadLine();
+
+            //List<Team> teamsFilteredTwo = await context.Teams.Where(team => team.Name.Contains(searchTerm)).ToListAsync();
+            
+            // SELECT * FROM Teams WHERE Name LIKE '%searchTerm%'
+            List<Team> teamsFilteredTwo = await context.Teams.Where(team => EF.Functions.Like(team.Name, $"%{searchTerm}%")).ToListAsync();
+            foreach (var team in teamsFilteredTwo)
+            {
+                System.Console.WriteLine(team.Name);
+            }
+
         }
 
         private static async Task StampAllTeams()
