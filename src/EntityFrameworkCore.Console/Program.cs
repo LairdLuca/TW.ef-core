@@ -25,6 +25,32 @@ namespace EntityFrameworkCore.Console
             //await AggregateMethods();
 
             // Grouping and Aggregating
+            //await GroupByMethod();
+
+            // Ordering
+            List<Team> orderedTeams = await context.Teams.OrderBy(team => team.Name).ToListAsync();
+            foreach (var team in orderedTeams)
+            {
+                System.Console.WriteLine(team.Name);
+            }
+            
+            List<Team> descOrderedTeams = await context.Teams.OrderByDescending(team => team.Name).ToListAsync();
+            foreach (var team in descOrderedTeams)
+            {
+                System.Console.WriteLine(team.Name);
+            }
+
+            // Gettting the record with a maximum value
+            var maxByDescedingOrder = context.Teams
+                .OrderByDescending(team => team.Id)
+                .FirstOrDefaultAsync();
+
+            // Same as above, but using the MaxBy method
+            var maxBy = context.Teams.MaxBy(team => team.Id);
+        }
+
+        private static async Task GroupByMethod()
+        {
             var groupedTeams = context.Teams
                 //.Where(team => team.CreatedDate > new DateTime(2021, 1, 1)) // Translates to a WHERE clause
                 .GroupBy(team => new { team.Name, team.CreatedDate.Date })
