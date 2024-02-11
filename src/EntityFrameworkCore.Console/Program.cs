@@ -22,6 +22,28 @@ namespace EntityFrameworkCore.Console
             //await StampFilteredTeams();
 
             // Aggregate Methods
+            //await AggregateMethods();
+
+            // Grouping and Aggregating
+            var groupedTeams = context.Teams
+                //.Where(team => team.CreatedDate > new DateTime(2021, 1, 1)) // Translates to a WHERE clause
+                .GroupBy(team => new { team.Name, team.CreatedDate.Date })
+                //.Where(group => group.Count() > 1) // Translates to a HAVING clause
+                ;
+
+            foreach (var group in groupedTeams)
+            {
+                System.Console.WriteLine($"Group: {group.Key}");
+                System.Console.WriteLine($"Sum IDs: {group.Sum(q => q.Id)}");
+                foreach (var team in group)
+                {
+                    System.Console.WriteLine(team.Name);
+                }
+            }
+        }
+
+        private static async Task AggregateMethods()
+        {
             // Count
             int numberOfTeams = await context.Teams.CountAsync();
             System.Console.WriteLine($"Number of teams: {numberOfTeams}");
@@ -37,7 +59,6 @@ namespace EntityFrameworkCore.Console
             double averageTeams = await context.Teams.AverageAsync(q => q.Id);
             // Sum
             int sumTeams = await context.Teams.SumAsync(q => q.Id);
-
         }
 
         private static async Task StampAllTeamsQuerySyntax()
