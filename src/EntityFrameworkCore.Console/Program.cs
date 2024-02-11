@@ -13,13 +13,30 @@ namespace EntityFrameworkCore.Console
         {
             // Select all teams
             //await  StampAllTeams();
-            await StampAllTeamsQuerySyntax();
+            //await StampAllTeamsQuerySyntax();
 
             //Select one team
             //await StampOneTeam();
-            
+
             //Select all record thast meet a condition
             //await StampFilteredTeams();
+
+            // Aggregate Methods
+            // Count
+            int numberOfTeams = await context.Teams.CountAsync();
+            System.Console.WriteLine($"Number of teams: {numberOfTeams}");
+
+            int numberOfTeamsWithCondition = await context.Teams.CountAsync(q => q.Id == 1);
+            System.Console.WriteLine($"Number of teams with condition: {numberOfTeamsWithCondition}");
+
+            // Max
+            int maxTeams = await context.Teams.MaxAsync(q => q.Id);
+            // Min
+            int minTeams = await context.Teams.MinAsync(q => q.Id);
+            // Average
+            double averageTeams = await context.Teams.AverageAsync(q => q.Id);
+            // Sum
+            int sumTeams = await context.Teams.SumAsync(q => q.Id);
 
         }
 
