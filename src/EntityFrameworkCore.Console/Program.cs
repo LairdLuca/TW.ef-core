@@ -33,24 +33,57 @@ namespace EntityFrameworkCore.Console
             //await OrderByMethods();
 
             // Skip and Take - Great for Paging
+            //await SkipAndTake();
+
+            // Select and Projections - more precise quries
+            List<string> teams = await context.Teams
+                .Select(team => team.Name)
+                .ToListAsync();
+
+            foreach (string name in teams)
+            {
+                System.Console.WriteLine(name);
+            }
+
+            var temas = await context.Teams
+                .Select(team => new { team.Name, team.CreatedDate })
+                .ToListAsync();
+
+            foreach (var teram in temas)
+            {
+                System.Console.WriteLine($"{teram.Name} - {teram.CreatedDate}");
+            }
+
+            List<TeamInfo> teamsInfo = await context.Teams
+                .Select(team => new TeamInfo { Name = team.Name, CreatedDate = team.CreatedDate })
+                .ToListAsync();
+
+            foreach (var teamInfo in teamsInfo)
+            {
+                System.Console.WriteLine($"{teamInfo.Name} - {teamInfo.CreatedDate}");
+            }
+
+        }
+
+        private static async Task SkipAndTake()
+        {
             int recordCount = 3;
             int page = 0;
             bool next = true;
             while (next)
             {
-                var teams = await context.Teams.Skip(page * recordCount).Take(recordCount).ToListAsync();
+                List<Team> teams = await context.Teams.Skip(page * recordCount).Take(recordCount).ToListAsync();
                 System.Console.WriteLine($"Page {page + 1}");
-                foreach (var team in teams)
+                foreach (Team team in teams)
                 {
                     System.Console.WriteLine(team.Name);
                 }
                 System.Console.WriteLine("Enter 'true' for the next set of records, 'false' to exit");
                 next = Convert.ToBoolean(System.Console.ReadLine());
 
-                if(!next) break;
+                if (!next) break;
                 page++;
             }
-
         }
 
         private static async Task OrderByMethods()
@@ -83,7 +116,7 @@ namespace EntityFrameworkCore.Console
                 .GroupBy(team => new { team.Name, team.CreatedDate.Date })
                 //.Where(group => group.Count() > 1) // Translates to a HAVING clause
                 ;
-                // .ToList(); // Use the executing method to load the results into memory before processing
+            // .ToList(); // Use the executing method to load the results into memory before processing
 
             // EF Core can iterate throught records on demand. Here, is executing method, but EF Core is bringing back records per iteratiom
             // This is convenint, but dangerus when you have several operations to complete per iteration.
@@ -124,7 +157,7 @@ namespace EntityFrameworkCore.Console
             string? searchTerm = System.Console.ReadLine();
 
             List<Team> teams = await (
-                from team in context.Teams 
+                from team in context.Teams
                 where EF.Functions.Like(team.Name, $"%{searchTerm}%")
                 select team
                 ).ToListAsync();
@@ -150,7 +183,7 @@ namespace EntityFrameworkCore.Console
             string? searchTerm = System.Console.ReadLine();
 
             //List<Team> teamsFilteredTwo = await context.Teams.Where(team => team.Name.Contains(searchTerm)).ToListAsync();
-            
+
             // SELECT * FROM Teams WHERE Name LIKE '%searchTerm%'
             List<Team> teamsFilteredTwo = await context.Teams.Where(team => EF.Functions.Like(team.Name, $"%{searchTerm}%")).ToListAsync();
             foreach (var team in teamsFilteredTwo)
@@ -223,5 +256,11 @@ namespace EntityFrameworkCore.Console
             }
 
         }
+    }
+
+    public class TeamInfo
+    {
+        public string Name { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }
