@@ -11,6 +11,8 @@ namespace EntityFrameworkCore.Console
 
         static async Task Main(string[] args)
         {
+            System.Console.WriteLine(context.DbPath);
+
             // Select all teams
             //await  StampAllTeams();
             //await StampAllTeamsQuerySyntax();
@@ -28,12 +30,37 @@ namespace EntityFrameworkCore.Console
             //await GroupByMethod();
 
             // Ordering
+            //await OrderByMethods();
+
+            // Skip and Take - Great for Paging
+            int recordCount = 3;
+            int page = 0;
+            bool next = true;
+            while (next)
+            {
+                var teams = await context.Teams.Skip(page * recordCount).Take(recordCount).ToListAsync();
+                System.Console.WriteLine($"Page {page + 1}");
+                foreach (var team in teams)
+                {
+                    System.Console.WriteLine(team.Name);
+                }
+                System.Console.WriteLine("Enter 'true' for the next set of records, 'false' to exit");
+                next = Convert.ToBoolean(System.Console.ReadLine());
+
+                if(!next) break;
+                page++;
+            }
+
+        }
+
+        private static async Task OrderByMethods()
+        {
             List<Team> orderedTeams = await context.Teams.OrderBy(team => team.Name).ToListAsync();
             foreach (var team in orderedTeams)
             {
                 System.Console.WriteLine(team.Name);
             }
-            
+
             List<Team> descOrderedTeams = await context.Teams.OrderByDescending(team => team.Name).ToListAsync();
             foreach (var team in descOrderedTeams)
             {
@@ -41,12 +68,12 @@ namespace EntityFrameworkCore.Console
             }
 
             // Gettting the record with a maximum value
-            var maxByDescedingOrder = context.Teams
+            Team? maxByDescedingOrder = await context.Teams
                 .OrderByDescending(team => team.Id)
                 .FirstOrDefaultAsync();
 
             // Same as above, but using the MaxBy method
-            var maxBy = context.Teams.MaxBy(team => team.Id);
+            Team? maxBy = context.Teams.MaxBy(team => team.Id);
         }
 
         private static async Task GroupByMethod()
@@ -56,7 +83,11 @@ namespace EntityFrameworkCore.Console
                 .GroupBy(team => new { team.Name, team.CreatedDate.Date })
                 //.Where(group => group.Count() > 1) // Translates to a HAVING clause
                 ;
+                // .ToList(); // Use the executing method to load the results into memory before processing
 
+            // EF Core can iterate throught records on demand. Here, is executing method, but EF Core is bringing back records per iteratiom
+            // This is convenint, but dangerus when you have several operations to complete per iteration.
+            // It is generally better to execute ToList() and then operate on whatever is returned to memory.
             foreach (var group in groupedTeams)
             {
                 System.Console.WriteLine($"Group: {group.Key}");
