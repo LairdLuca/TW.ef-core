@@ -36,6 +36,24 @@ namespace EntityFrameworkCore.Console
             //await SkipAndTake();
 
             // Select and Projections - more precise quries
+            //await SelectAndProjections();
+
+            // No Tracking - EF Core tracks object that are returned by queries.
+            //This is less useful in disconnected applications like APIs and Web apps
+            var teams = await context.Teams
+                .AsNoTracking()
+                //.AsTracking() // this line is to track the entity if the context is configured to not track entities
+                .ToListAsync();
+
+            foreach (var team in teams)
+            {
+                System.Console.WriteLine(team.Name);
+            }
+
+        }
+
+        private static async Task SelectAndProjections()
+        {
             List<string> teams = await context.Teams
                 .Select(team => team.Name)
                 .ToListAsync();
@@ -62,7 +80,6 @@ namespace EntityFrameworkCore.Console
             {
                 System.Console.WriteLine($"{teamInfo.Name} - {teamInfo.CreatedDate}");
             }
-
         }
 
         private static async Task SkipAndTake()

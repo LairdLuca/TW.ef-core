@@ -24,13 +24,16 @@ namespace EntityFrameworkCore.Data
 
         override protected void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //Using SQL Server
+            // Using SQL Server
             //optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=FootballLeague_EFCore; Encrypt=False");
 
             optionsBuilder.UseSqlite($"Data Source={DbPath}")
                 .LogTo(Console.WriteLine, LogLevel.Information)
 
-                //this two lines are used only for educational purposes, do not use in production
+                // this line is to avoid tracking entities globally
+                //.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+
+                // this two lines are used only for educational purposes, do not use in production
                 .EnableSensitiveDataLogging() 
                 .EnableDetailedErrors();  
         }
