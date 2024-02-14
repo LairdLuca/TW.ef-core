@@ -39,7 +39,51 @@ namespace EntityFrameworkCore.Console
             //await SelectAndProjections();
 
             // No Tracking - EF Core tracks object that are returned by queries.
-            //This is less useful in disconnected applications like APIs and Web apps
+            // This is less useful in disconnected applications like APIs and Web apps
+            //await NoTracking();
+
+            // IQueryables vs List Types
+            System.Console.WriteLine("Press '1' for Team with Id 1 or '2' for teams that contain 'F.C.'");
+            int option = Convert.ToInt32(System.Console.ReadLine());
+            List<Team> teamsAsList = new List<Team>();
+
+            // After executing to ToListAsync, the records are loaded into memory. Any operations is then done in memory
+            teamsAsList = await context.Teams.ToListAsync();
+            if (option == 1)
+            {
+                teamsAsList = teamsAsList.Where(team => team.Id == 1).ToList();
+            }
+            else if (option == 2)
+            {
+                teamsAsList = teamsAsList.Where(team => team.Name.Contains("F.C.")).ToList();
+            }
+
+            foreach (var team in teamsAsList)
+            {
+                System.Console.WriteLine(team.Name);
+            }
+
+            // Rcords stsy as IQueryable until the ToListAsync is executed, then the final query is performed
+            IQueryable<Team> teamsAsQueryable = context.Teams.AsQueryable();
+            if (option == 1)
+            {
+                teamsAsQueryable = teamsAsQueryable.Where(team => team.Id == 1);
+            }
+            else if (option == 2)
+            {
+                teamsAsQueryable = teamsAsQueryable.Where(team => team.Name.Contains("F.C."));
+            }
+
+            teamsAsList = await teamsAsQueryable.ToListAsync();
+            foreach (var team in teamsAsList)
+            {
+                System.Console.WriteLine(team.Name);
+            }
+
+        }
+
+        private static async Task NoTracking()
+        {
             var teams = await context.Teams
                 .AsNoTracking()
                 //.AsTracking() // this line is to track the entity if the context is configured to not track entities
@@ -49,7 +93,6 @@ namespace EntityFrameworkCore.Console
             {
                 System.Console.WriteLine(team.Name);
             }
-
         }
 
         private static async Task SelectAndProjections()
