@@ -11,8 +11,10 @@ namespace EntityFrameworkCore.Console
 
         static async Task Main(string[] args)
         {
-            System.Console.WriteLine(context.DbPath);
+            // For SQLite Users to see where the database is being created
+            //System.Console.WriteLine(context.DbPath);
 
+            #region Read Queries
             // Select all teams
             //await  StampAllTeams();
             //await StampAllTeamsQuerySyntax();
@@ -43,6 +45,50 @@ namespace EntityFrameworkCore.Console
             //await NoTracking();
 
             // IQueryables vs List Types
+            //await ListVsQeryable();
+            #endregion
+
+            // Inserting Data
+            /* INSERT INTO Coaches (cols) VALUES (values) */
+
+            // Simple Insert
+            var newCoach = new Coach
+            {
+                Name = "John Doe",
+                CreatedDate = DateTime.Now
+            };
+            await context.Coaches.AddAsync(newCoach);
+            await context.SaveChangesAsync();
+
+            // Loop Insert
+            var newCoaches = new List<Coach>
+            {
+                new Coach { Name = "Theodore Whitmore", CreatedDate = DateTime.Now },
+                new Coach { Name = "Jose Mourinho", CreatedDate = DateTime.Now },
+                new Coach { Name = "Jane Smith", CreatedDate = DateTime.Now }
+            };
+            foreach (var coach in newCoaches)
+            {
+                await context.Coaches.AddAsync(coach);
+            }
+            System.Console.WriteLine(context.ChangeTracker.DebugView.LongView);
+            await context.SaveChangesAsync();
+            System.Console.WriteLine(context.ChangeTracker.DebugView.LongView);
+
+            foreach (var coach in newCoaches)
+            {
+                System.Console.WriteLine($"{coach.Id} - {coach.Name}");
+            }
+
+            // Batch Insert
+            await context.Coaches.AddRangeAsync(newCoaches);
+            await context.SaveChangesAsync();
+
+
+        }
+
+        private static async Task ListVsQeryable()
+        {
             System.Console.WriteLine("Press '1' for Team with Id 1 or '2' for teams that contain 'F.C.'");
             int option = Convert.ToInt32(System.Console.ReadLine());
             List<Team> teamsAsList = new List<Team>();
@@ -63,7 +109,7 @@ namespace EntityFrameworkCore.Console
                 System.Console.WriteLine(team.Name);
             }
 
-            // Rcords stsy as IQueryable until the ToListAsync is executed, then the final query is performed
+            // Records stay as IQueryable until the ToListAsync is executed, then the final query is performed
             IQueryable<Team> teamsAsQueryable = context.Teams.AsQueryable();
             if (option == 1)
             {
@@ -79,7 +125,6 @@ namespace EntityFrameworkCore.Console
             {
                 System.Console.WriteLine(team.Name);
             }
-
         }
 
         private static async Task NoTracking()
