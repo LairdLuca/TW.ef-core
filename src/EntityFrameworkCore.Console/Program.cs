@@ -55,17 +55,35 @@ namespace EntityFrameworkCore.Console
             //await UpdateOperations();
 
             // Delete Operations
+            //await DeleteOperations();
+
+            // Execute Operations
+            // Execute Delete (EF Core >= 7)
+            await context.Coaches
+                .Where(coach => coach.Name == "Roberto Rossini")
+                .ExecuteDeleteAsync();
+
+            // Execute Update (EF Core >= 7)
+            await context.Coaches
+                .Where(coach => coach.Name == "Roberto Rossi")
+                .ExecuteUpdateAsync(coach => coach
+                    .SetProperty(prop => prop.Name, "Pep Guardiola")
+                    .SetProperty(prop => prop.CreatedDate, DateTime.Now
+                ));
+
+
+        }
+
+
+        private static async Task DeleteOperations()
+        {
             /* DELETE FROM Coaches WHERE ID = 1 */
             var coach = await context.Coaches.FindAsync(9);
             context.Remove(coach);
             //context.Entry(coach).State = EntityState.Deleted; //This produces the same result as the line above
             await context.SaveChangesAsync();
-
-            
-
         }
 
-        
 
         private static async Task UpdateOperations()
         {
