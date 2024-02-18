@@ -20,6 +20,9 @@ namespace EntityFrameworkCore.Data
 
         public DbSet<Team> Teams { get; set; }
         public DbSet<Coach> Coaches { get; set; }
+        public DbSet<League> Leagues { get; set; }
+        public DbSet<Match> Matches { get; set; }
+        
         public string DbPath { get; private set; }
 
         override protected void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
