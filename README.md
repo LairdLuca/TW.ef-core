@@ -22,6 +22,8 @@ From setting up the environment to querying databases using EF Core, the code pr
 - Skip and Take
 - Projections and Custom Data Types
 - Tracking Vs. No Tracking
+- Simple Insert, Update and Delete Operations
+- ExecuteUpdate and ExecuteDelete (>= EF Core 7)
 
 ## Prerequisites
 1. Some C# Knowledge
