@@ -52,13 +52,30 @@ namespace EntityFrameworkCore.Console
             //await InsertOperations();
 
             // Update Operationss
-            //Coach? coach = await context.Coaches.FindAsync(9);
-            //coach.Name = "Roberto Rossi";
-            //await context.SaveChangesAsync();
+            //await UpdateOperations();
+
+            // Delete Operations
+            /* DELETE FROM Coaches WHERE ID = 1 */
+            var coach = await context.Coaches.FindAsync(9);
+            context.Remove(coach);
+            //context.Entry(coach).State = EntityState.Deleted; //This produces the same result as the line above
+            await context.SaveChangesAsync();
+
+            
+
+        }
+
+        
+
+        private static async Task UpdateOperations()
+        {
+            Coach? coach = await context.Coaches.FindAsync(9);
+            coach.Name = "Roberto Rossi";
+            await context.SaveChangesAsync();
 
             // With no tracking
             Coach? coachNoTracking = await context.Coaches.AsNoTracking().FirstOrDefaultAsync(coach => coach.Id == 9);
-            coachNoTracking.Name = "Roberto Rossini 22";
+            coachNoTracking.Name = "Roberto Rossini";
 
             System.Console.WriteLine(context.ChangeTracker.DebugView.LongView);
             context.Coaches.Update(coachNoTracking);
@@ -66,7 +83,6 @@ namespace EntityFrameworkCore.Console
             System.Console.WriteLine(context.ChangeTracker.DebugView.LongView);
             await context.SaveChangesAsync();
             System.Console.WriteLine(context.ChangeTracker.DebugView.LongView);
-
 
         }
 
