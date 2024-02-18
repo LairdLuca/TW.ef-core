@@ -49,6 +49,29 @@ namespace EntityFrameworkCore.Console
             #endregion
 
             // Inserting Data
+            //await InsertOperations();
+
+            // Update Operationss
+            //Coach? coach = await context.Coaches.FindAsync(9);
+            //coach.Name = "Roberto Rossi";
+            //await context.SaveChangesAsync();
+
+            // With no tracking
+            Coach? coachNoTracking = await context.Coaches.AsNoTracking().FirstOrDefaultAsync(coach => coach.Id == 9);
+            coachNoTracking.Name = "Roberto Rossini 22";
+
+            System.Console.WriteLine(context.ChangeTracker.DebugView.LongView);
+            context.Coaches.Update(coachNoTracking);
+            //context.Entry(coachNoTracking).State = EntityState.Modified; //This produces the same result as the line above
+            System.Console.WriteLine(context.ChangeTracker.DebugView.LongView);
+            await context.SaveChangesAsync();
+            System.Console.WriteLine(context.ChangeTracker.DebugView.LongView);
+
+
+        }
+
+        private static async Task InsertOperations()
+        {
             /* INSERT INTO Coaches (cols) VALUES (values) */
 
             // Simple Insert
@@ -83,8 +106,6 @@ namespace EntityFrameworkCore.Console
             // Batch Insert
             await context.Coaches.AddRangeAsync(newCoaches);
             await context.SaveChangesAsync();
-
-
         }
 
         private static async Task ListVsQeryable()
