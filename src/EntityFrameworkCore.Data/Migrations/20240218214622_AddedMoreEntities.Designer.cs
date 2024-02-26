@@ -3,6 +3,7 @@ using System;
 using EntityFrameworkCore.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EntityFrameworkCore.Data.Migrations
 {
     [DbContext(typeof(FootballLeagueDbContext))]
-    partial class FootballLeagueDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240218214622_AddedMoreEntities")]
+    partial class AddedMoreEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.1");
@@ -23,13 +26,7 @@ namespace EntityFrameworkCore.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ModifiedBy")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("ModifiedDate")
@@ -50,13 +47,7 @@ namespace EntityFrameworkCore.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ModifiedBy")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("ModifiedDate")
@@ -80,9 +71,6 @@ namespace EntityFrameworkCore.Data.Migrations
                     b.Property<int>("AwayTeamId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("TEXT");
 
@@ -90,9 +78,6 @@ namespace EntityFrameworkCore.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("MatchDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ModifiedBy")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("ModifiedDate")
@@ -115,17 +100,11 @@ namespace EntityFrameworkCore.Data.Migrations
                     b.Property<int>("CoachId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("LeagueId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("TEXT");
@@ -143,7 +122,7 @@ namespace EntityFrameworkCore.Data.Migrations
                         {
                             Id = 1,
                             CoachId = 0,
-                            CreatedDate = new DateTime(2024, 2, 18, 21, 48, 48, 764, DateTimeKind.Unspecified).AddTicks(8117),
+                            CreatedDate = new DateTime(2024, 2, 18, 21, 46, 21, 609, DateTimeKind.Unspecified).AddTicks(2698),
                             LeagueId = 0,
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Tivoli Gardens F.C."
@@ -152,7 +131,7 @@ namespace EntityFrameworkCore.Data.Migrations
                         {
                             Id = 2,
                             CoachId = 0,
-                            CreatedDate = new DateTime(2024, 2, 18, 21, 48, 48, 764, DateTimeKind.Unspecified).AddTicks(8139),
+                            CreatedDate = new DateTime(2024, 2, 18, 21, 46, 21, 609, DateTimeKind.Unspecified).AddTicks(2708),
                             LeagueId = 0,
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Waterhouse F.C."
@@ -161,7 +140,7 @@ namespace EntityFrameworkCore.Data.Migrations
                         {
                             Id = 3,
                             CoachId = 0,
-                            CreatedDate = new DateTime(2024, 2, 18, 21, 48, 48, 764, DateTimeKind.Unspecified).AddTicks(8140),
+                            CreatedDate = new DateTime(2024, 2, 18, 21, 46, 21, 609, DateTimeKind.Unspecified).AddTicks(2709),
                             LeagueId = 0,
                             ModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Humble Lions F.C."
