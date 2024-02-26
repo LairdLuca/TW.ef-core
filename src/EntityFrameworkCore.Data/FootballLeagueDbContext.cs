@@ -1,9 +1,11 @@
-﻿using EntityFrameworkCore.Domain;
+﻿using EntityFrameworkCore.Data.Configurations;
+using EntityFrameworkCore.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -43,27 +45,12 @@ namespace EntityFrameworkCore.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Team>().HasData(
-                    new Team
-                    {
-                        Id = 1,
-                        Name = "Tivoli Gardens F.C.",
-                        CreatedDate = DateTimeOffset.UtcNow.DateTime
-                    },
-                    new Team
-                    {
-                        Id = 2,
-                        Name = "Waterhouse F.C.",
-                        CreatedDate = DateTimeOffset.UtcNow.DateTime
-                    },
-                    new Team
-                    {
-                        Id = 3,
-                        Name = "Humble Lions F.C.",
-                        CreatedDate = DateTimeOffset.UtcNow.DateTime
-                    }
-                );
+            // With this method, we can apply the configuration for each entity
+            //modelBuilder.ApplyConfiguration(new TeamConfiguration());
+            //modelBuilder.ApplyConfiguration(new LeagueConfiguration());
 
+            // With this line, it will apply all configurations (IEntityTypeConfiguration<TEntity>) in the same assembly as the DbContext
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly()); 
         }
     }
 }
