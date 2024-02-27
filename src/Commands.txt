@@ -26,3 +26,12 @@ Done.
 PM> Scaffold-DbContext 'Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=FootballLeague_EFCore; Encrypt=False' Microsoft.EntityFrameworkCore.SqlServer -ContextDir ScaffoldContext -OutputDir ScaffoldModels -Force
 
 if database change add -Force to the command to scaffold the model again ad override the old ones.
+
+-- Create Script SQL for the migration with every Migrations as a different Transaction
+PM> Script-Migration -Context FootballLeagueDbContext
+Build started...
+Build succeeded.
+
+PM> Script-Migration -Idempotent  -Context FootballLeagueDbContext
+Build started...
+Build succeeded.
