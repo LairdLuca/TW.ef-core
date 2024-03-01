@@ -14,6 +14,14 @@ namespace EntityFrameworkCore.Console
             // For SQLite Users to see where the database is being created
             //System.Console.WriteLine(context.DbPath);
 
+
+            // Ensure the database is created
+            //context.Database.EnsureCreated();
+
+            // Ensure the database is created and migrated to the latest version
+            await context.Database.MigrateAsync();
+
+
             #region Read Queries
             // Select all teams
             //await  StampAllTeams();
@@ -48,6 +56,7 @@ namespace EntityFrameworkCore.Console
             //await ListVsQeryable();
             #endregion
 
+            #region Write Queries
             // Inserting Data
             //await InsertOperations();
 
@@ -58,6 +67,16 @@ namespace EntityFrameworkCore.Console
             //await DeleteOperations();
 
             // Execute Operations
+            //await ExecuteOperations();
+            #endregion
+
+
+
+        }
+
+
+        public static async Task ExecuteOperations()
+        {
             // Execute Delete (EF Core >= 7)
             await context.Coaches
                 .Where(coach => coach.Name == "Roberto Rossini")
@@ -70,10 +89,7 @@ namespace EntityFrameworkCore.Console
                     .SetProperty(prop => prop.Name, "Pep Guardiola")
                     .SetProperty(prop => prop.CreatedDate, DateTime.Now
                 ));
-
-
         }
-
 
         private static async Task DeleteOperations()
         {
