@@ -35,3 +35,13 @@ Build succeeded.
 PM> Script-Migration -Idempotent  -Context FootballLeagueDbContext
 Build started...
 Build succeeded.
+
+-- Get all migrations and if is applied or not 
+PM> Get-Migration
+Build started...
+Build succeeded.
+
+-- Update a specific migration or rollback to a specific migration
+PM> Update-Database -Migration 20240218214622_AddedMoreEntities
+Build started...
+Build succeeded.
