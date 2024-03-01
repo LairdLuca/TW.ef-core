@@ -15,6 +15,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementi di soluzione", "Elementi di soluzione", "{C76C573F-D268-43E4-B6A5-010D1F53059F}"
 	ProjectSection(SolutionItems) = preProject
 		Commands.txt = Commands.txt
+		EF-Bundles.txt = EF-Bundles.txt
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
