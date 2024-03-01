@@ -24,6 +24,12 @@ From setting up the environment to querying databases using EF Core, the code pr
 - Tracking Vs. No Tracking
 - Simple Insert, Update and Delete Operations
 - ExecuteUpdate and ExecuteDelete (>= EF Core 7)
+- Updating Database with Migration(s)
+- Using Configuration Files
+- Generating Migration Scripts
+- Rolling Back Migrations and Database Changes
+- EF Bundles
+- Applying Migrations at Runtime
 
 ## Prerequisites
 1. Some C# Knowledge
