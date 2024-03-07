@@ -1,0 +1,5 @@
+EF Core Power Tools
+-- To use it you may install "Microsoft.EntityFrameworkCore.Design"
+Useful to do some operations with EF Core, like generate migrations, update database, etc.
+And see the database diagram.
+

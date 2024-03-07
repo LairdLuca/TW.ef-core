@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementi di soluzione", "El
 	ProjectSection(SolutionItems) = preProject
 		Commands.txt = Commands.txt
 		EF-Bundles.txt = EF-Bundles.txt
+		Plugins.txt = Plugins.txt
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
