@@ -12,7 +12,7 @@ namespace EntityFrameworkCore.Console
         static async Task Main(string[] args)
         {
             // For SQLite Users to see where the database is being created
-            //System.Console.WriteLine(context.DbPath);
+            System.Console.WriteLine(context.DbPath);
 
 
             // Ensure the database is created

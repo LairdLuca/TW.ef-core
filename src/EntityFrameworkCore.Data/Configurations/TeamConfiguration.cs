@@ -33,19 +33,25 @@ namespace EntityFrameworkCore.Data.Configurations
                     {
                         Id = 1,
                         Name = "Tivoli Gardens F.C.",
-                        CreatedDate = new DateTime(2024, 3, 7)
+                        CreatedDate = new DateTime(2024, 3, 7),
+                        LeagueId = 1,
+                        CoachId = 1
                     },
                     new Team
                     {
                         Id = 2,
                         Name = "Waterhouse F.C.",
-                        CreatedDate = new DateTime(2024, 3, 7)
+                        CreatedDate = new DateTime(2024, 3, 7),
+                        LeagueId = 1,
+                        CoachId = 2
                     },
                     new Team
                     {
                         Id = 3,
                         Name = "Humble Lions F.C.",
-                        CreatedDate = new DateTime(2024, 3, 7)
+                        CreatedDate = new DateTime(2024, 3, 7),
+                        LeagueId = 1,
+                        CoachId = 3
                     }
                 );
 
