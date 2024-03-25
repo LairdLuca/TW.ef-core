@@ -70,7 +70,83 @@ namespace EntityFrameworkCore.Console
             //await ExecuteOperations();
             #endregion
 
+            #region Related Data
+            // Insert record with FK
+            //var match1 = new Match
+            //{
+            //    HomeTeamId = 1,
+            //    AwayTeamId = 2,
+            //    HomeTeamScore = 0,
+            //    AwayTeamScore = 0,
+            //    MatchDate = new DateTime(2025, 10, 10),
+            //    TicketPrice = 20
+            //};
 
+            //await context.AddAsync(match1);
+            //await context.SaveChangesAsync();
+
+            /* Incorrect reference data - Will give error */
+            //var match2 = new Match
+            //{
+            //    HomeTeamId = 10,
+            //    AwayTeamId = 0,
+            //    HomeTeamScore = 0,
+            //    AwayTeamScore = 0,
+            //    MatchDate = new DateTime(2025, 10, 10),
+            //    TicketPrice = 20
+            //};
+
+            //await context.AddAsync(match2);
+            //await context.SaveChangesAsync();
+
+            // Insert Parent/Child
+            //var team = new Team
+            //{
+            //    Name = "Manchester United F.C.",
+            //    Coach = new Coach
+            //    {
+            //        Name = "Roberto Rossini",
+            //    }
+            //};
+            //await context.AddAsync(team);
+            //await context.SaveChangesAsync();
+
+            // Insert Parent with Children
+            var league = new League
+            {
+                Name = "Serie A",
+                Teams = new List<Team>
+                {
+                    new Team
+                    {
+                        Name = "Juventus",
+                        Coach = new Coach
+                        {
+                            Name = "Juve Coach"
+                        }
+                    },
+                    new Team
+                    {
+                        Name = "AC Milan",
+                        Coach = new Coach
+                        {
+                            Name = "Milan Coach"
+                        }
+                    },
+                    new Team
+                    {
+                        Name = "AS Roma", 
+                        Coach = new Coach
+                        {
+                            Name = "Roma Coach"
+                        }
+                    }
+                }
+            };
+            await context.AddAsync(league);
+            await context.SaveChangesAsync();
+
+            #endregion
 
         }
 
