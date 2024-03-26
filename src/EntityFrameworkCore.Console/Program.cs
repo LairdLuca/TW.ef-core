@@ -71,19 +71,42 @@ namespace EntityFrameworkCore.Console
             #endregion
 
             #region Related Data
-            // Insert record with FK
-            //var match1 = new Match
-            //{
-            //    HomeTeamId = 1,
-            //    AwayTeamId = 2,
-            //    HomeTeamScore = 0,
-            //    AwayTeamScore = 0,
-            //    MatchDate = new DateTime(2025, 10, 10),
-            //    TicketPrice = 20
-            //};
+            // Insert Related Data
+            //await InsertRelatedData();
 
-            //await context.AddAsync(match1);
-            //await context.SaveChangesAsync();
+            var league = await context.Leagues
+                .Include(league => league.Teams)
+                .ThenInclude(team => team.Coach)
+                .ToListAsync();
+            foreach (var item in league)
+            {
+                System.Console.WriteLine($"League: {item.Name}");
+                foreach (var team in item.Teams)
+                {
+                    System.Console.WriteLine($"- {team.Name} --> {team.Coach.Name}");
+                }
+            }
+
+            #endregion
+
+        }
+
+
+        public static async Task InsertRelatedData()
+        {
+            // Insert record with FK
+            var match1 = new Match
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeTeamScore = 0,
+                AwayTeamScore = 0,
+                MatchDate = new DateTime(2025, 10, 10),
+                TicketPrice = 20
+            };
+
+            await context.AddAsync(match1);
+            await context.SaveChangesAsync();
 
             /* Incorrect reference data - Will give error */
             //var match2 = new Match
@@ -100,16 +123,16 @@ namespace EntityFrameworkCore.Console
             //await context.SaveChangesAsync();
 
             // Insert Parent/Child
-            //var team = new Team
-            //{
-            //    Name = "Manchester United F.C.",
-            //    Coach = new Coach
-            //    {
-            //        Name = "Roberto Rossini",
-            //    }
-            //};
-            //await context.AddAsync(team);
-            //await context.SaveChangesAsync();
+            var team = new Team
+            {
+                Name = "Manchester United F.C.",
+                Coach = new Coach
+                {
+                    Name = "Roberto Rossini",
+                }
+            };
+            await context.AddAsync(team);
+            await context.SaveChangesAsync();
 
             // Insert Parent with Children
             var league = new League
@@ -135,7 +158,7 @@ namespace EntityFrameworkCore.Console
                     },
                     new Team
                     {
-                        Name = "AS Roma", 
+                        Name = "AS Roma",
                         Coach = new Coach
                         {
                             Name = "Roma Coach"
@@ -145,11 +168,7 @@ namespace EntityFrameworkCore.Console
             };
             await context.AddAsync(league);
             await context.SaveChangesAsync();
-
-            #endregion
-
         }
-
 
         public static async Task ExecuteOperations()
         {
