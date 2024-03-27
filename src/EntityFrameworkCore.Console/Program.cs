@@ -84,8 +84,67 @@ namespace EntityFrameworkCore.Console
             // Lazy Loading
             //await LazyLoadingData();
 
+            // Filtering Includes
+            // Get all teams and only home matches where they have scored
+            //await InsertMoreMatches();
+            var teams = await context.Teams
+                .Include(t => t.Coach)
+                .Include(team => team.HomeMatches.Where(match => match.HomeTeamScore > 0))
+                .ToListAsync();
+
+            foreach (var team in teams)
+            {
+                System.Console.WriteLine($"{team.Name} - {team.Coach.Name}");
+                foreach (var match in team.HomeMatches)
+                {
+                    System.Console.WriteLine($"Score: {match.HomeTeamScore} ");
+                }
+            }
+
             #endregion
 
+        }
+
+        public static async Task InsertMoreMatches()
+        {
+            var match1 = new Match
+            {
+                AwayTeamId = 2,
+                HomeTeamId = 3,
+                HomeTeamScore = 1,
+                AwayTeamScore = 0,
+                MatchDate = new DateTime(2023, 01, 1),
+                TicketPrice = 20,
+            };
+            var match2 = new Match
+            {
+                AwayTeamId = 2,
+                HomeTeamId = 1,
+                HomeTeamScore = 1,
+                AwayTeamScore = 0,
+                MatchDate = new DateTime(2023, 01, 1),
+                TicketPrice = 20,
+            };
+            var match3 = new Match
+            {
+                AwayTeamId = 1,
+                HomeTeamId = 3,
+                HomeTeamScore = 1,
+                AwayTeamScore = 0,
+                MatchDate = new DateTime(2023, 01, 1),
+                TicketPrice = 20,
+            };
+            var match4 = new Match
+            {
+                AwayTeamId = 4,
+                HomeTeamId = 3,
+                HomeTeamScore = 0,
+                AwayTeamScore = 1,
+                MatchDate = new DateTime(2023, 01, 1),
+                TicketPrice = 20,
+            };
+            await context.AddRangeAsync(match1, match2, match3, match4);
+            await context.SaveChangesAsync();
         }
 
         public static async Task LazyLoadingData()
