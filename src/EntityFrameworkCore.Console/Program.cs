@@ -1,6 +1,7 @@
 ﻿using EntityFrameworkCore.Data;
 using EntityFrameworkCore.Domain;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.CompilerServices;
 
 namespace EntityFrameworkCore.Console
 {
@@ -74,6 +75,32 @@ namespace EntityFrameworkCore.Console
             // Insert Related Data
             //await InsertRelatedData();
 
+            // Eager Loading Data
+            //await EagerLoadingData();
+
+            // Explicit Loading Data
+            var league = await context.FindAsync<League>(1);
+            if(!league.Teams.Any())
+            {
+                System.Console.WriteLine("No teams found");
+            }
+
+            context.Entry(league).Collection(league => league.Teams).Load();
+            if (league.Teams.Any())
+            {
+                foreach (var team in league.Teams)
+                {
+                    System.Console.WriteLine(team.Name);
+                }
+            }
+
+
+            #endregion
+
+        }
+
+        public static async Task EagerLoadingData()
+        {
             var league = await context.Leagues
                 .Include(league => league.Teams)
                 .ThenInclude(team => team.Coach)
@@ -86,11 +113,7 @@ namespace EntityFrameworkCore.Console
                     System.Console.WriteLine($"- {team.Name} --> {team.Coach.Name}");
                 }
             }
-
-            #endregion
-
         }
-
 
         public static async Task InsertRelatedData()
         {
