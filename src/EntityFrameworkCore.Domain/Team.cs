@@ -8,9 +8,9 @@
         public virtual Coach Coach { get; set; }
 
         public int? LeagueId { get; set; }
-        public virtual League? League { get; set; }
+        public League? League { get; set; }
 
-        public virtual List<Match> HomeMatches { get; set; } = new List<Match>();
-        public virtual List<Match> AwayMatches { get; set; } = new List<Match>();
+        public List<Match> HomeMatches { get; set; } = new List<Match>();
+        public List<Match> AwayMatches { get; set; } = new List<Match>();
     }
 }

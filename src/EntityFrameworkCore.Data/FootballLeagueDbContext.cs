@@ -33,7 +33,7 @@ namespace EntityFrameworkCore.Data
             //optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=FootballLeague_EFCore; Encrypt=False");
 
             optionsBuilder.UseSqlite($"Data Source={DbPath}")
-                .UseLazyLoadingProxies()
+                //.UseLazyLoadingProxies()
                 .LogTo(Console.WriteLine, LogLevel.Information)
 
                 // this line is to avoid tracking entities globally

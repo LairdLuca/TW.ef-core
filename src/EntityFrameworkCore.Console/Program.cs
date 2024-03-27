@@ -82,6 +82,14 @@ namespace EntityFrameworkCore.Console
             //await ExplicitLoadingData();
 
             // Lazy Loading
+            //await LazyLoadingData();
+
+            #endregion
+
+        }
+
+        public static async Task LazyLoadingData()
+        {
             var league = await context.FindAsync<League>(1);
             foreach (var team in league.Teams)
             {
@@ -89,16 +97,13 @@ namespace EntityFrameworkCore.Console
             }
 
             // This is why lazy loading is not recommended (Read the output)
-            foreach(var leaguee in await context.Leagues.ToListAsync())
+            foreach (var leaguee in await context.Leagues.ToListAsync())
             {
                 foreach (var team in leaguee.Teams)
                 {
                     System.Console.WriteLine($"{team.Name} - {team.Coach.Name}");
                 }
             }
-
-            #endregion
-
         }
 
         public static async Task ExplicitLoadingData()
