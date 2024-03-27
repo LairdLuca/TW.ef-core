@@ -79,8 +79,32 @@ namespace EntityFrameworkCore.Console
             //await EagerLoadingData();
 
             // Explicit Loading Data
+            //await ExplicitLoadingData();
+
+            // Lazy Loading
             var league = await context.FindAsync<League>(1);
-            if(!league.Teams.Any())
+            foreach (var team in league.Teams)
+            {
+                System.Console.WriteLine(team.Name);
+            }
+
+            // This is why lazy loading is not recommended (Read the output)
+            foreach(var leaguee in await context.Leagues.ToListAsync())
+            {
+                foreach (var team in leaguee.Teams)
+                {
+                    System.Console.WriteLine($"{team.Name} - {team.Coach.Name}");
+                }
+            }
+
+            #endregion
+
+        }
+
+        public static async Task ExplicitLoadingData()
+        {
+            var league = await context.FindAsync<League>(1);
+            if (!league.Teams.Any())
             {
                 System.Console.WriteLine("No teams found");
             }
@@ -93,10 +117,6 @@ namespace EntityFrameworkCore.Console
                     System.Console.WriteLine(team.Name);
                 }
             }
-
-
-            #endregion
-
         }
 
         public static async Task EagerLoadingData()

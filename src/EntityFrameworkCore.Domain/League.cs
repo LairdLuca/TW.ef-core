@@ -3,7 +3,7 @@
     public class League : BaseDomainModel
     {
         public string Name { get; set; }
-        public List<Team> Teams { get; set; } = new List<Team>();
+        public virtual List<Team> Teams { get; set; } = new List<Team>();
 
     }
 }
