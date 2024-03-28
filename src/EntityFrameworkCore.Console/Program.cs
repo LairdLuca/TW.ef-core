@@ -86,6 +86,38 @@ namespace EntityFrameworkCore.Console
 
             // Filtering Includes
             // Get all teams and only home matches where they have scored
+            //await FileringIncludes();
+
+            // Projection and Anonymous types
+            //await ProjectionAndAnonymousTypes();
+
+
+
+            #endregion
+
+        }
+
+        public static async Task ProjectionAndAnonymousTypes()
+        {
+            var teams = await context.Teams
+                .Select(team => new TeamDetails
+                {
+                    TeamId = team.Id,
+                    TeamName = team.Name,
+                    CoachName = team.Coach.Name,
+                    TotalHomeGoals = team.HomeMatches.Sum(match => match.HomeTeamScore),
+                    TotalAwayGoals = team.AwayMatches.Sum(match => match.AwayTeamScore)
+                })
+                .ToListAsync();
+
+            foreach (var team in teams)
+            {
+                System.Console.WriteLine($"{team.TeamName} - {team.CoachName} | Home Goals: {team.TotalHomeGoals} | Away Goals: {team.TotalAwayGoals}");
+            }
+        }
+
+        public static async Task FileringIncludes()
+        {
             //await InsertMoreMatches();
             var teams = await context.Teams
                 .Include(t => t.Coach)
@@ -100,9 +132,6 @@ namespace EntityFrameworkCore.Console
                     System.Console.WriteLine($"Score: {match.HomeTeamScore} ");
                 }
             }
-
-            #endregion
-
         }
 
         public static async Task InsertMoreMatches()
@@ -641,4 +670,15 @@ namespace EntityFrameworkCore.Console
         public string Name { get; set; }
         public DateTime CreatedDate { get; set; }
     }
+
+    class TeamDetails
+    {
+        public int TeamId { get; set; }
+        public string TeamName { get; set; }
+        public string CoachName { get; set; }
+
+        public int TotalHomeGoals { get; set; }
+        public int TotalAwayGoals { get; set; }
+    }
+
 }
