@@ -10,26 +10,25 @@ From setting up the environment to querying databases using EF Core, the code pr
 
 ## Topics Covered
 - Environment Setup
-- Data Models and Database Context
-- Database Providers and Connection String
-- Code-First Development and Migrations
-- Verbose Logging in EF Core
-- LINQ Syntax
-- Querying Basics
-- Synchronous vs. Asynchronous Syntax
-- Filters and Additional Features
-- Aggregate Methods, Group By, Order By
-- Skip and Take
-- Projections and Custom Data Types
-- Tracking Vs. No Tracking
-- Simple Insert, Update and Delete Operations
-- ExecuteUpdate and ExecuteDelete (>= EF Core 7)
-- Updating Database with Migration(s)
-- Using Configuration Files
-- Generating Migration Scripts
-- Rolling Back Migrations and Database Changes
-- EF Bundles
-- Applying Migrations at Runtime
+- Setup Data, Domain and Application Projects
+- Create Data models and Database context
+- Explored Data adapters
+- Use Migrations Command (Add-Migrations, Update-Database, Scaffold-Database)
+- Seeded Data into database from code
+- Basic LINQ syntax
+- Compared LINQ with generated SQL
+- Explored different common query scenarios
+- Look at best practices and efficent querying methods
+- Configure global query behavior vs. on case-by-case basis
+- Perform write operations
+- Explored Changed Tracking - Pros and COns
+- Review batch operations and LINQ statemets
+- Managing Migrations and Database versions
+- Generationg Migration scripts
+- Managing database updates
+- Managing Database Relationships
+- Entity Navigation Properties
+- EF Core Conventions
 
 ## Prerequisites
 1. Some C# Knowledge
