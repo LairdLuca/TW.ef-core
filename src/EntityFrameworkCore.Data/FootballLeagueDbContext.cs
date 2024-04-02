@@ -24,6 +24,7 @@ namespace EntityFrameworkCore.Data
         public DbSet<Coach> Coaches { get; set; }
         public DbSet<League> Leagues { get; set; }
         public DbSet<Match> Matches { get; set; }
+        public DbSet<TeamsAndLeaguesView> TeamsAndLeaguesViews { get; set; }
         
         public string DbPath { get; private set; }
 
@@ -52,6 +53,8 @@ namespace EntityFrameworkCore.Data
 
             // With this line, it will apply all configurations (IEntityTypeConfiguration<TEntity>) in the same assembly as the DbContext
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly()); 
+
+            modelBuilder.Entity<TeamsAndLeaguesView>().HasNoKey().ToView("vm_TeamsAndLeaguesView");
         }
     }
 }

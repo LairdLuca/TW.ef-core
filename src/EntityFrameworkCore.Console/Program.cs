@@ -93,8 +93,11 @@ namespace EntityFrameworkCore.Console
 
             #endregion
 
+            #region Raw SQL
+            var details = await context.TeamsAndLeaguesViews.ToListAsync();
 
 
+            #endregion
 
         }
 
