@@ -91,9 +91,10 @@ namespace EntityFrameworkCore.Console
             // Projection and Anonymous types
             //await ProjectionAndAnonymousTypes();
 
-
-
             #endregion
+
+
+
 
         }
 
