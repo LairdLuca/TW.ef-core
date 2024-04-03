@@ -29,6 +29,10 @@ From setting up the environment to querying databases using EF Core, the code pr
 - Managing Database Relationships
 - Entity Navigation Properties
 - EF Core Conventions
+- Adding non-table objects using migrations
+- Configuring Keyless Entities (Views) ad Functions
+- Executing Raw SQL with EF Core
+- Executing non-entity type and scalar queries
 
 ## Prerequisites
 1. Some C# Knowledge
