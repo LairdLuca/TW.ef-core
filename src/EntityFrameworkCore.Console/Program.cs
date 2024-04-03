@@ -99,12 +99,24 @@ namespace EntityFrameworkCore.Console
             // Queryng a Keyless Entity
             //await QueryngKeylessEntityOrVIew();
 
+            // Querying with Raw SQL
+            //await QueryingWithRawSQL();
+
+
+
+
+            #endregion
+
+        }
+
+        public static async Task QueryingWithRawSQL()
+        {
             // FromSqlRaw
             System.Console.WriteLine("Enter Team Name: ");
             var teamName = System.Console.ReadLine();
             var teamNameParam = new SqliteParameter("teamName", teamName);
             var teams = context.Teams.FromSqlRaw($"SELECT * FROM Teams WHERE Name = @teamName ", teamNameParam);
-            foreach(var t in teams)
+            foreach (var t in teams)
             {
                 System.Console.WriteLine(t.Name);
             }
@@ -146,9 +158,8 @@ namespace EntityFrameworkCore.Console
             var teamToDeleteId = 1;
             int deleted = context.Database.ExecuteSqlInterpolated($"EXEC dbo.DeleteTeam {teamToDeleteId}");
 
-
-            #endregion
-
+            // Query Scalar or Non-Entity Type
+            var leagueIds = context.Database.SqlQuery<int>($"SELECT Id FROM Leagues").ToList();
         }
 
         public static async Task QueryngKeylessEntityOrVIew()
