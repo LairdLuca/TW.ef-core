@@ -1,5 +1,7 @@
 ﻿using EntityFrameworkCore.Data;
 using EntityFrameworkCore.Domain;
+using Microsoft.Data.SqlClient;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 
@@ -94,11 +96,64 @@ namespace EntityFrameworkCore.Console
             #endregion
 
             #region Raw SQL
-            var details = await context.TeamsAndLeaguesViews.ToListAsync();
+            // Queryng a Keyless Entity
+            //await QueryngKeylessEntityOrVIew();
+
+            // FromSqlRaw
+            System.Console.WriteLine("Enter Team Name: ");
+            var teamName = System.Console.ReadLine();
+            var teamNameParam = new SqliteParameter("teamName", teamName);
+            var teams = context.Teams.FromSqlRaw($"SELECT * FROM Teams WHERE Name = @teamName ", teamNameParam);
+            foreach(var t in teams)
+            {
+                System.Console.WriteLine(t.Name);
+            }
+
+            // FromSql
+            teams = context.Teams.FromSql($"SELECT * FROM Teams WHERE Name = {teamName} ");
+            foreach (var t in teams)
+            {
+                System.Console.WriteLine(t.Name);
+            }
+
+            // FromSqlInterpolated
+            teams = context.Teams.FromSqlInterpolated($"SELECT * FROM Teams WHERE Name = {teamName} ");
+            foreach (var t in teams)
+            {
+                System.Console.WriteLine(t.Name);
+            }
+
+            // Mixing with LINQ
+            var teamsList = context.Teams.FromSqlRaw($"SELECT * FROM Teams WHERE Name = @teamName ", teamNameParam)
+                .Where(t => t.Id > 1)
+                .OrderBy(t => t.Name)
+                .Include(t => t.Coach)
+                .ToList();
+
+            foreach (var t in teamsList)
+            {
+                System.Console.WriteLine($"{t.Name} - {t.Coach.Name}");
+            }
+
+            // Execute Stored Procedures
+            var leagueId = 1;
+            var league = context.Leagues.FromSqlInterpolated($"EXEC dbo.StoredProcedureToGetLeagueNameHere {leagueId}");
+
+            // Non-queryng statemant
+            var someNewTeamName = "New Team Name Here";
+            int success = context.Database.ExecuteSqlInterpolated($"UPDATE Teams SET Name = {someNewTeamName} WHERE Id = 1");
+
+            var teamToDeleteId = 1;
+            int deleted = context.Database.ExecuteSqlInterpolated($"EXEC dbo.DeleteTeam {teamToDeleteId}");
 
 
             #endregion
 
+        }
+
+        public static async Task QueryngKeylessEntityOrVIew()
+        {
+            var details = await context.TeamsAndLeaguesViews.ToListAsync();
         }
 
         public static async Task ProjectionAndAnonymousTypes()
