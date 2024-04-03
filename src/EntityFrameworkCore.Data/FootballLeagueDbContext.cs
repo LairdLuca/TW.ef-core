@@ -55,6 +55,12 @@ namespace EntityFrameworkCore.Data
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly()); 
 
             modelBuilder.Entity<TeamsAndLeaguesView>().HasNoKey().ToView("vm_TeamsAndLeaguesView");
+
+            modelBuilder.HasDbFunction(typeof(FootballLeagueDbContext)
+                .GetMethod(nameof(GetEarliestTeamMatch), new[] { typeof(int) }))
+                .HasName("fn_GetEarliestTeamMatch");
         }
+
+        public DateTime GetEarliestTeamMatch(int teamId) => throw new NotImplementedException();
     }
 }
