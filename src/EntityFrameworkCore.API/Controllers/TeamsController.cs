@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EntityFrameworkCore.Data;
 using EntityFrameworkCore.Domain;
+using EntityFrameworkCore.API.Models;
 
 namespace EntityFrameworkCore.API.Controllers
 {
@@ -23,16 +24,29 @@ namespace EntityFrameworkCore.API.Controllers
 
         // GET: api/Teams
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Team>>> GetTeams()
+        public async Task<ActionResult<IEnumerable<TeamDto>>> GetTeams()
         {
-            return await _context.Teams.ToListAsync();
+            //return await _context.Teams.ToListAsync();
+            var teams = await _context.Teams
+                .Select(t => new TeamDto
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    CoachName = t.Coach.Name
+                })
+                .ToListAsync();
+
+            return teams;
         }
 
         // GET: api/Teams/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Team>> GetTeam(int id)
         {
-            var team = await _context.Teams.FindAsync(id);
+            var team = await _context.Teams
+                .Include(t => t.Coach)
+                .Include(t => t.League)
+                .FirstOrDefaultAsync(q => q.Id ==  id);
 
             if (team == null)
             {
