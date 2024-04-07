@@ -25,11 +25,11 @@ namespace EntityFrameworkCore.API
 
             builder.Services.AddDbContext<FootballLeagueDbContext>(options =>
             {
-                options.UseSqlite(connectionString)
-                    .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
-                    .LogTo(Console.WriteLine, LogLevel.Information);
+                options.UseSqlite(connectionString);
+                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                options.LogTo(Console.WriteLine, LogLevel.Information);
 
-                if(!builder.Environment.IsProduction())
+                if (!builder.Environment.IsProduction())
                 {
                     options.EnableSensitiveDataLogging();
                     options.EnableDetailedErrors();
