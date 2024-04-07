@@ -33,6 +33,11 @@ From setting up the environment to querying databases using EF Core, the code pr
 - Configuring Keyless Entities (Views) ad Functions
 - Executing Raw SQL with EF Core
 - Executing non-entity type and scalar queries
+- Setup API project
+- Configure DB Context options from the app start up
+- Scaffold Controller code for EF Core CRUD
+- Refactor scaffolded code as needed per operation
+- Configured JSON to ignore EF Core reference cycles
 
 ## Prerequisites
 1. Some C# Knowledge
