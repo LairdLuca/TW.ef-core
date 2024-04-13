@@ -21,6 +21,8 @@ namespace EntityFrameworkCore.Console
             optionsBuilder.UseSqlite($"Data Source={dbPath}");
             context = new FootballLeagueDbContext(optionsBuilder.Options);
 
+            using var sqlServerContext = new FootballLeagueSqlServerDbContext();
+
             // For SQLite Users to see where the database is being created
             //System.Console.WriteLine(context.DbPath);
 
@@ -114,6 +116,22 @@ namespace EntityFrameworkCore.Console
 
 
             #endregion
+
+            var teamHistory = sqlServerContext.Teams
+                .TemporalAll()
+                .Where(q => q.Id == 1)
+                .Select(q => new
+                {
+                    q.Name,
+                    ValueFrom = EF.Property<DateTime>(q, "PeriodStart"),
+                    ValueTo = EF.Property<DateTime>(q, "PeriodEnd")
+                })
+                .ToList();
+
+            foreach (var team in teamHistory)
+            {
+                System.Console.WriteLine($"{team.Name} - {team.ValueFrom} to {team.ValueTo}");
+            }
 
         }
 
