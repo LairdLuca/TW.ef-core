@@ -44,6 +44,25 @@ namespace EntityFrameworkCore.Data
                 .HasName("fn_GetEarliestTeamMatch");
         }
 
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var entries = ChangeTracker.Entries<BaseDomainModel>().Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
+
+            foreach (var entry in entries)
+            {
+                entry.Entity.ModifiedDate = DateTime.UtcNow;
+                entry.Entity.ModifiedBy = "Sample User 1";
+
+                if (entry.State == EntityState.Added)
+                {
+                    entry.Entity.CreatedDate = DateTime.UtcNow;
+                    entry.Entity.CreatedBy = "Sample User";
+                }
+            }
+
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
         public DateTime GetEarliestTeamMatch(int teamId) => throw new NotImplementedException();
     }
 

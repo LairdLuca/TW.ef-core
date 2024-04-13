@@ -9,13 +9,20 @@ namespace EntityFrameworkCore.Console
 {
     internal class Program
     {
-        // First we need an instance of the context
-        private static FootballLeagueDbContext context = new FootballLeagueDbContext();
+        private static FootballLeagueDbContext context;
 
         static async Task Main(string[] args)
         {
+            // First we need an instace of context
+            var folder = Environment.SpecialFolder.LocalApplicationData;
+            var path = Environment.GetFolderPath(folder);
+            var dbPath = Path.Combine(path, "FootballLeague_EFCore.db");
+            var optionsBuilder = new DbContextOptionsBuilder<FootballLeagueDbContext>();
+            optionsBuilder.UseSqlite($"Data Source={dbPath}");
+            context = new FootballLeagueDbContext(optionsBuilder.Options);
+
             // For SQLite Users to see where the database is being created
-            System.Console.WriteLine(context.DbPath);
+            //System.Console.WriteLine(context.DbPath);
 
 
             // Ensure the database is created
@@ -76,6 +83,7 @@ namespace EntityFrameworkCore.Console
             #region Related Data
             // Insert Related Data
             //await InsertRelatedData();
+            //await InsertOneRecordWithAudit();
 
             // Eager Loading Data
             //await EagerLoadingData();
@@ -376,6 +384,17 @@ namespace EntityFrameworkCore.Console
                 }
             };
             await context.AddAsync(league);
+            await context.SaveChangesAsync();
+        }
+
+        public static async Task InsertOneRecordWithAudit()
+        {
+            var newLeague = new League
+            {
+                Name = "Premier League",
+            };
+
+            await context.Leagues.AddAsync(newLeague);
             await context.SaveChangesAsync();
         }
 
