@@ -14,7 +14,16 @@ namespace EntityFrameworkCore.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Team> builder)
         {
+            builder.Property(t => t.Name)
+               .HasMaxLength(100)
+               .IsRequired();
+
             builder.HasIndex(t => t.Name).IsUnique();
+
+            // Composite Key Configuration
+            //builder.HasIndex(t => new { t.CoachId, t.LeagueId }).IsUnique();
+
+           
 
             builder.ToTable("Teams", b => b.IsTemporal());
 

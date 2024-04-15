@@ -41,7 +41,7 @@ namespace EntityFrameworkCore.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Coaches");
+                    b.ToTable("Coaches", (string)null);
 
                     b.HasData(
                         new
@@ -91,7 +91,7 @@ namespace EntityFrameworkCore.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Leagues");
+                    b.ToTable("Leagues", (string)null);
 
                     b.HasData(
                         new
@@ -159,7 +159,7 @@ namespace EntityFrameworkCore.Data.Migrations
 
                     b.HasIndex("HomeTeamId");
 
-                    b.ToTable("Matches");
+                    b.ToTable("Matches", (string)null);
                 });
 
             modelBuilder.Entity("EntityFrameworkCore.Domain.Team", b =>
@@ -200,7 +200,7 @@ namespace EntityFrameworkCore.Data.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Teams");
+                    b.ToTable("Teams", (string)null);
 
                     b.HasData(
                         new
