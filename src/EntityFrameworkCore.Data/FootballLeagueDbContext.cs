@@ -44,6 +44,12 @@ namespace EntityFrameworkCore.Data
                 .HasName("fn_GetEarliestTeamMatch");
         }
 
+        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+        {
+            configurationBuilder.Properties<string>().HaveMaxLength(100);
+            configurationBuilder.Properties<decimal>().HavePrecision(16, 2);
+        }
+
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             var entries = ChangeTracker.Entries<BaseDomainModel>().Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
