@@ -21,7 +21,7 @@ namespace EntityFrameworkCore.Console
             optionsBuilder.UseSqlite($"Data Source={dbPath}");
             context = new FootballLeagueDbContext(optionsBuilder.Options);
 
-            using var sqlServerContext = new FootballLeagueSqlServerDbContext();
+
 
             // For SQLite Users to see where the database is being created
             //System.Console.WriteLine(context.DbPath);
@@ -117,22 +117,72 @@ namespace EntityFrameworkCore.Console
 
             #endregion
 
-            var teamHistory = sqlServerContext.Teams
-                .TemporalAll()
-                .Where(q => q.Id == 1)
-                .Select(q => new
+            #region Additional Queries
+            //await TemporalTableQuery();
+
+            var transaction = context.Database.BeginTransaction();
+            var league = new League
+            {
+                Name = "Testing Transactions"
+            };
+
+            context.Add(league);
+            context.SaveChanges();
+            transaction.CreateSavepoint("CreatedLeague");
+
+            var coach = new Coach
+            {
+                Name = "Transaction Coach",
+            };
+            context.Add(coach);
+            context.SaveChanges();
+
+            var Teams = new List<Team>
+            {
+                new Team
                 {
-                    q.Name,
-                    ValueFrom = EF.Property<DateTime>(q, "PeriodStart"),
-                    ValueTo = EF.Property<DateTime>(q, "PeriodEnd")
-                })
-                .ToList();
+                    Name = "Transaction Team 1",
+                    LeagueId = league.Id,
+                    CoachId = coach.Id
+                },
+            };
+            context.AddRange(Teams);
+            context.SaveChanges();
+
+            try
+            {
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex.Message);
+                //transaction.Rollback();
+                transaction.RollbackToSavepoint("CreatedLeague");
+            }
+
+            #endregion
+
+        }
+
+        public static async Task TemporalTableQuery()
+        {
+            using var sqlServerContext = new FootballLeagueSqlServerDbContext();
+
+            var teamHistory = sqlServerContext.Teams
+               .TemporalAll()
+               .Where(q => q.Id == 1)
+               .Select(q => new
+               {
+                   q.Name,
+                   ValueFrom = EF.Property<DateTime>(q, "PeriodStart"),
+                   ValueTo = EF.Property<DateTime>(q, "PeriodEnd")
+               })
+               .ToList();
 
             foreach (var team in teamHistory)
             {
                 System.Console.WriteLine($"{team.Name} - {team.ValueFrom} to {team.ValueTo}");
             }
-
         }
 
         public static async Task QueryingWithRawSQL()
