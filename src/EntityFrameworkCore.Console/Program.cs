@@ -120,6 +120,27 @@ namespace EntityFrameworkCore.Console
             #region Additional Queries
             //await TemporalTableQuery();
 
+            //TransactionSupport();
+
+            //Concurrency Check
+            var team = await context.Teams.FindAsync(1);
+            team.Name = "New Name with concurrency Check";
+            try
+            {
+                await context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                System.Console.WriteLine(ex.Message);
+                throw;
+            }
+
+            #endregion
+
+        }
+
+        public static void TransactionSupport()
+        {
             var transaction = context.Database.BeginTransaction();
             var league = new League
             {
@@ -159,9 +180,6 @@ namespace EntityFrameworkCore.Console
                 //transaction.Rollback();
                 transaction.RollbackToSavepoint("CreatedLeague");
             }
-
-            #endregion
-
         }
 
         public static async Task TemporalTableQuery()

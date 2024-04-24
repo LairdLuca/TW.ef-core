@@ -23,7 +23,13 @@ namespace EntityFrameworkCore.Data.Configurations
             // Composite Key Configuration
             //builder.HasIndex(t => new { t.CoachId, t.LeagueId }).IsUnique();
 
-           
+            // For SQL Server Only
+            //builder.Property(t => t.Version)
+            //    .IsRowVersion();
+
+            builder.Property(t => t.Version)
+                .IsConcurrencyToken();
+
 
             builder.ToTable("Teams", b => b.IsTemporal());
 

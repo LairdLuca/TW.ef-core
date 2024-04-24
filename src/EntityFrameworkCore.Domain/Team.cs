@@ -1,4 +1,6 @@
-﻿namespace EntityFrameworkCore.Domain
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace EntityFrameworkCore.Domain
 {
     public class Team : BaseDomainModel
     {
@@ -9,6 +11,10 @@
 
         public int? LeagueId { get; set; }
         public League? League { get; set; }
+
+        // For SQL Server Only
+        //[Timestamp]
+        //public byte[] Version { get; set; }
 
         public List<Match> HomeMatches { get; set; } = new List<Match>();
         public List<Match> AwayMatches { get; set; } = new List<Match>();
