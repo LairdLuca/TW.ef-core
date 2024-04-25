@@ -18,7 +18,10 @@ namespace EntityFrameworkCore.Console
             var path = Environment.GetFolderPath(folder);
             var dbPath = Path.Combine(path, "FootballLeague_EFCore.db");
             var optionsBuilder = new DbContextOptionsBuilder<FootballLeagueDbContext>();
-            optionsBuilder.UseSqlite($"Data Source={dbPath}");
+            optionsBuilder.UseSqlite($"Data Source={dbPath}", sqliteOptions =>
+            {
+                sqliteOptions.CommandTimeout(30);
+            });
             context = new FootballLeagueDbContext(optionsBuilder.Options);
 
 
@@ -126,6 +129,14 @@ namespace EntityFrameworkCore.Console
             //await ConcurrencyChecks();
 
             // Global Query Filters
+            //await GlobalQueryFilters();
+
+            #endregion
+
+        }
+
+        public async static Task GlobalQueryFilters()
+        {
             var leagues = context.Leagues.ToList();
             foreach (var item in leagues)
             {
@@ -136,7 +147,7 @@ namespace EntityFrameworkCore.Console
             league.IsDeleted = true;
 
             context.SaveChanges();
-            
+
             //var league = context.Leagues.Where(q => !q.IsDeleted).ToList();
             // after query filter is applied
             leagues = context.Leagues.ToList();
@@ -144,11 +155,7 @@ namespace EntityFrameworkCore.Console
             {
                 System.Console.WriteLine(item.Name);
             }
-
-            #endregion
-
         }
-
 
         public async static Task ConcurrencyChecks()
         {
