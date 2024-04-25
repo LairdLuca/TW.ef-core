@@ -8,6 +8,9 @@ namespace EntityFrameworkCore.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<League> builder)
         {
+            // multiple query filters will not work
+            builder.HasQueryFilter(l => l.IsDeleted == false);
+
             builder.HasData(
                 new League
                 {

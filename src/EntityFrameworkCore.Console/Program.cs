@@ -123,6 +123,35 @@ namespace EntityFrameworkCore.Console
             //TransactionSupport();
 
             //Concurrency Check
+            //await ConcurrencyChecks();
+
+            // Global Query Filters
+            var leagues = context.Leagues.ToList();
+            foreach (var item in leagues)
+            {
+                System.Console.WriteLine(item.Name);
+            }
+
+            var league = context.Leagues.Find(1);
+            league.IsDeleted = true;
+
+            context.SaveChanges();
+            
+            //var league = context.Leagues.Where(q => !q.IsDeleted).ToList();
+            // after query filter is applied
+            leagues = context.Leagues.ToList();
+            foreach (var item in leagues)
+            {
+                System.Console.WriteLine(item.Name);
+            }
+
+            #endregion
+
+        }
+
+
+        public async static Task ConcurrencyChecks()
+        {
             var team = await context.Teams.FindAsync(1);
             team.Name = "New Name with concurrency Check";
             try
@@ -134,9 +163,6 @@ namespace EntityFrameworkCore.Console
                 System.Console.WriteLine(ex.Message);
                 throw;
             }
-
-            #endregion
-
         }
 
         public static void TransactionSupport()
